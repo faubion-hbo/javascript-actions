@@ -10,7 +10,7 @@ runs:
       run: |
         node --version
 
-    - uses: ./.github/actions/_greeter
+    - uses: faubion-hbo/javascript-actions/.github/actions/_greeter@main
       id: run-action
       with:
         who-to-greet: Henry

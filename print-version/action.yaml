@@ -10,7 +10,7 @@ runs:
       run: |
         node --version
 
-    - uses: ./.github/actions/_print-version
+    - uses: faubion-hbo/javascript-actions/.github/actions/_print-version@main
 
     - name: Last, outside action call
       shell: bash
