@@ -2,6 +2,11 @@ name: greeter
 
 description: prints "Hello World!"
 
+outputs:
+  time:
+    description: 'The time we greeted you'
+    value: ${{ steps.run-action.outputs.time }}
+
 runs:
   using: composite
   steps:
@@ -10,10 +15,8 @@ runs:
       run: |
         node --version
 
-    - uses: faubion-hbo/javascript-actions/.github/actions/_greeter@main
+    - uses: ./../.github/actions/_greeter
       id: run-action
-      with:
-        who-to-greet: Henry
 
     - name: Last, outside action call
       shell: bash
