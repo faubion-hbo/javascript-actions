@@ -1,0 +1,22 @@
+name: greeter
+
+description: prints "Hello World!"
+
+runs:
+  using: composite
+  steps:
+    - name: First, outside action call
+      shell: bash
+      run: |
+        node --version
+
+    - uses: ./.github/actions/_greeter
+      id: run-action
+      with:
+        who-to-greet: Henry
+
+    - name: Last, outside action call
+      shell: bash
+      run: |
+        node --version
+        echo "output: ${{ steps.run-action.outputs.time }}"
