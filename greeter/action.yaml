@@ -15,6 +15,11 @@ runs:
       run: |
         node --version
 
+    - name: '[DEBUG]: `pwd`'
+      shell: bash
+      run: |
+        pwd
+
     - name: Link dynamic dep. Action location to expected
       shell: bash
       env:
