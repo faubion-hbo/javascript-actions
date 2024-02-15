@@ -15,7 +15,16 @@ runs:
       run: |
         node --version
 
-    - uses: ./../.github/actions/_greeter
+    - name: Link dynamic dep. Action location to expected
+      shell: bash
+      env:
+        THIS_ACTIONS_PATH: ${{ github.action_path }}/..
+        EXPECTED_ACTIONS_PATH: .github/actions/internal/greeter
+      run: |
+        ln -fs "THIS_ACTIONS_PATH" "$EXPECTED_ACTIONS_PATH"
+        ls "$EXPECTED_ACTIONS_PATH"
+
+    - uses: ./.github/actions/internal/greeter
       id: run-action
 
     - name: Last, outside action call
