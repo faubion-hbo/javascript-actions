@@ -27,7 +27,7 @@ runs:
         EXPECTED_ACTIONS_PATH: .github/actions/internal/greeter
       run: |
         mkdir -p "$EXPECTED_ACTIONS_PATH"
-        ln -fs "THIS_ACTIONS_PATH" "$EXPECTED_ACTIONS_PATH"
+        ln -fs "$THIS_ACTIONS_PATH" "$EXPECTED_ACTIONS_PATH"
         ls "$EXPECTED_ACTIONS_PATH"
 
     - uses: ./.github/actions/internal/greeter
