@@ -28,8 +28,8 @@ runs:
       run: |
         expected_actions_dir="$(dirname $EXPECTED_ACTIONS_PATH)"
         mkdir -p "$expected_actions_dir"
-        this_actions_dir="$(dirname $THIS_ACTIONS_PATH)"
-        ln -fs "$this_actions_dir" "$EXPECTED_ACTIONS_PATH"
+        #this_actions_dir="$(dirname $THIS_ACTIONS_PATH)"
+        ln -fs "$THIS_ACTIONS_PATH" "$EXPECTED_ACTIONS_PATH"
 
     - name: '[DEBUG]: `ls` expected action dir'
       shell: bash
