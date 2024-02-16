@@ -33,8 +33,8 @@ runs:
         ACTION_PATH: ${{ steps.constants.outputs.internal-action-path }}
         EXPECTED_PATH: ${{ steps.constants.outputs.expected-action-path }}
       run: |
-        expected_action_dir="$(dirname $EXPECTED_ACTIONS_PATH)"
-        mkdir -p "$expected_action_dir"
+        expected_dir="$(dirname $EXPECTED_PATH)"
+        mkdir -p "$expected_dir"
         ln -fs "$ACTION_PATH" "$EXPECTED_PATH"
 
     - name: '[DEBUG]: Print where the action-to-call should be'
