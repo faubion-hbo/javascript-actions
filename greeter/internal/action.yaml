@@ -1,17 +1,17 @@
 ---
 name: greeter
 
-description: source code for the "greeter" action
+description: source code for the parent "greeter" action
 
 inputs:
   who-to-greet:
-    description: 'Who to greet'
+    description: Who to greet
     required: true
-    default: 'World'
+    default: World
 
 outputs:
   time:
-    description: 'The time we greeted you'
+    description: When the greeting happened
 
 runs:
   using: node20
