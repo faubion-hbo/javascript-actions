@@ -22,7 +22,7 @@ runs:
       run: |
         node --version
 
-### ==== TO_REPEAT ====
+###### <repeat> ######
     - name: Set constants for internal action
       shell: bash
       id: constants
@@ -61,8 +61,8 @@ runs:
         OUTPUT: ${{ steps.internal-action.outputs.time }}
       run: |
         echo "output: $OUTPUT"
-### ==== / TO_REPEAT ====
 
+###### </repeat> ######
     - name: Print `node` version at end of action
       shell: bash
       run: |

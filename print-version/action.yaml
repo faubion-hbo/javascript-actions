@@ -11,7 +11,7 @@ runs:
       run: |
         node --version
 
-### ==== TO_REPEAT ====
+###### <repeat> ######
     - name: Link internal action to expected path
       shell: bash
       env:
@@ -25,7 +25,7 @@ runs:
     - uses: ./.github/actions/_internal/print-version
       id: internal-action
 
-### ==== / TO_REPEAT ====
+###### </repeat> ######
     - name: Print `node` version at end of action
       shell: bash
       run: |
