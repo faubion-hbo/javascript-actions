@@ -9,6 +9,7 @@ runs:
     - name: Print `node` version at start of action
       shell: bash
       run: |
+        # "Print `node` version at start of action"
         node --version
 
 ###### <repeat> ######
@@ -18,15 +19,16 @@ runs:
         INTERNAL_ACTION_PATH: ${{ github.action_path }}/internal
         EXPECTED_ACTION_PATH: .github/actions/_internal/print-version
       run: |
+        # "Link internal action to expected path"
         expected_dir="$(dirname $EXPECTED_ACTION_PATH)"
         mkdir -p "$expected_dir"
         ln -fs "$INTERNAL_ACTION_PATH" "$EXPECTED_ACTION_PATH"
 
     - uses: ./.github/actions/_internal/print-version
-      id: internal-action
 
 ###### </repeat> ######
     - name: Print `node` version at end of action
       shell: bash
       run: |
+        # "Print `node` version at end of action"
         node --version
