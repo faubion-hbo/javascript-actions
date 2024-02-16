@@ -48,7 +48,9 @@ runs:
       env:
         EXPECTED_PATH: ${{ steps.constants.outputs.expected-action-path }}
       run: |
+        echo '::group::DEBUG'
         tree -a "$EXPECTED_PATH"
+        echo '::endgroup::'
 
     - uses: ./.github/actions/_internal/greeter
       id: internal-action
