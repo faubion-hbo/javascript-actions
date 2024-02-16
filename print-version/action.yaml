@@ -1,18 +1,58 @@
-name: print-version
+---
+name: print-node-version
 
-description: prints the Node version, wrapped
+description: "Print the version of NodeJS that's running this action!"
 
 runs:
   using: composite
   steps:
-    - name: First, outside action call
+    - name: Print `node` version at start of action
       shell: bash
       run: |
         node --version
 
-    - uses: ./../.github/actions/_print-version
+### ==== TO_REPEAT ====
+    - name: Set constants for internal action
+      shell: bash
+      id: constants
+      env:
+        INTERNAL_ACTION_PATH: ${{ github.action_path }}/internal
+        EXPECTED_ACTION_PATH: .github/actions/_internal/print-version
+      run: |
+        echo "expected-action-path=$EXPECTED_ACTION_PATH" >> "$GITHUB_OUTPUT"
+        echo "internal-action-path=$INTERNAL_ACTION_PATH" >> "$GITHUB_OUTPUT"
 
-    - name: Last, outside action call
+    - name: Link internal action to expected path
+      shell: bash
+      env:
+        INTERNAL_ACTION_PATH: ${{ steps.constants.outputs.internal-action-path }}
+        EXPECTED_ACTION_PATH: ${{ steps.constants.outputs.expected-action-path }}
+      run: |
+        expected_dir="$(dirname $EXPECTED_ACTION_PATH)"
+        mkdir -p "$expected_dir"
+        ln -fs "$INTERNAL_ACTION_PATH" "$EXPECTED_ACTION_PATH"
+
+    - name: '[DEBUG]: Print contents of linked path'
+      shell: bash
+      env:
+        EXPECTED_PATH: ${{ steps.constants.outputs.expected-action-path }}
+      run: |
+        tree -a "$EXPECTED_PATH"
+
+    - uses: ./.github/actions/_internal/print-version
+      id: internal-action
+      with:
+        who-to-greet: ${{ inputs.who-to-greet }}
+
+    - name: '[DEBUG]: Print any outputs from internal action'
+      shell: bash
+      env:
+        OUTPUT: ${{ steps.internal-action.outputs.time }}
+      run: |
+        echo "output: $OUTPUT"
+### ==== / TO_REPEAT ====
+
+    - name: Print `node` version at end of action
       shell: bash
       run: |
         node --version

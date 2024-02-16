@@ -1,0 +1,8 @@
+---
+name: print-version
+
+description: source code for the parent "print-version" action
+
+runs:
+  using: node20
+  main: index.js

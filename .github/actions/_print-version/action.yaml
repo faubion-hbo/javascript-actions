@@ -1,8 +1,0 @@
----
-name: _print-version
-
-description: wrapped Javascript for "print-version"
-
-runs:
-  using: node20
-  main: index.js
