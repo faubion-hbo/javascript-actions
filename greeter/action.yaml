@@ -1,48 +1,62 @@
 name: greeter
 
-description: prints "Hello World!"
+description: Greets the caller (wraps `src/greeter` action)
 
 outputs:
   time:
-    description: 'The time we greeted you'
+    description: The time you were greeted
     value: ${{ steps.run-action.outputs.time }}
 
 runs:
   using: composite
   steps:
-    - name: First, outside action call
+    - name: Print `node` version of runner
       shell: bash
       run: |
         node --version
 
-    - name: '[DEBUG]: `pwd`'
-      shell: bash
-      run: |
-        pwd
+### ==== TO_REPEAT ====
 
-    - name: Link dynamic dep. Action location to expected
+    - name: Set action constants
+      shell: bash
+      id: constants
+      env:
+        INTERNAL_ACTION_PATH: ${{ github.action_path }}/internal
+        EXPECTED_ACTION_PATH: .github/actions/internal/greeter
+      run: |
+        echo "expected-action-path=$EXPECTED_ACTION_PATH" >> "$GITHUB_OUTPUT"
+        echo "internal-action-path=$INTERNAL_ACTION_PATH" >> "$GITHUB_OUTPUT"
+
+    - name: Link dependent action to expected path
       shell: bash
       env:
-        THIS_ACTIONS_PATH: ${{ github.action_path }}
-        EXPECTED_ACTIONS_PATH: .github/actions/internal/greeter
+        ACTION_PATH: ${{ steps.constants.outputs.internal-action-path }}
+        EXPECTED_PATH: ${{ steps.constants.outputs.expected-action-path }}
       run: |
-        expected_actions_dir="$(dirname $EXPECTED_ACTIONS_PATH)"
-        mkdir -p "$expected_actions_dir"
-        #this_actions_dir="$(dirname $THIS_ACTIONS_PATH)"
-        ln -fs "$THIS_ACTIONS_PATH" "$EXPECTED_ACTIONS_PATH"
+        expected_action_dir="$(dirname $EXPECTED_ACTIONS_PATH)"
+        mkdir -p "$expected_action_dir"
+        ln -fs "$ACTION_PATH" "$EXPECTED_PATH"
 
-    - name: '[DEBUG]: `ls` expected action dir'
+    - name: '[DEBUG]: Print where the action-to-call should be'
       shell: bash
       env:
-        EXPECTED_ACTIONS_PATH: .github/actions/internal/greeter
+        EXPECTED_PATH: ${{ steps.constants.outputs.expected-action-path }}
       run: |
-        ls "$EXPECTED_ACTIONS_PATH"
+        tree -a "$EXPECTED_PATH"
 
     - uses: ./.github/actions/internal/greeter
       id: run-action
 
-    - name: Last, outside action call
+    - name: Print `node` version of runner after calling action
       shell: bash
       run: |
         node --version
-        echo "output: ${{ steps.run-action.outputs.time }}"
+
+### ==== / TO_REPEAT ====
+
+    - name: Print output from called action
+      shell: bash
+      env:
+        OUTPUT: ${{ steps.run-action.outputs.time }}
+      run: |
+        echo "output: $OUTPUT"
